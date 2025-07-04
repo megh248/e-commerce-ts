@@ -23,11 +23,11 @@ const Cart: React.FC = () => {
     };
 
     if (!cart.cartItems.length) {
-        return <div className="container mt-4"><h2>Cart</h2><p>Your shopping cart is empty.</p></div>;
+        return <div className="container-fluid mt-4"><h2>Cart</h2><p>Your shopping cart is empty.</p></div>;
     }
 
     return (
-        <div className="container mt-4">
+        <div className="container-fluid mt-4">
             <h2>Cart</h2>
             <button className="btn btn-danger mb-3" onClick={handleClear}>Clear Cart</button>
             <table className="table">
