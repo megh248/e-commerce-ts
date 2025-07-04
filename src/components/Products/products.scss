@@ -1,0 +1,17 @@
+.quantity-container{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    .quantity-button{
+        background-color: transparent;
+        color: black;
+        border: 1px solid #ccc;
+        &-minus{
+            border:transparent;
+            border-right: 1px solid #ccc;
+        }
+        &-plus{
+            border:transparent;
+            border-left: 1px solid #ccc;
+        }
+    }
+}

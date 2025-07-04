@@ -1,38 +1,40 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { Product } from "../../types/Product";
 import ProductsList from "./ProductsList/ProductsList";
-import { fetchProducts } from "./_redux/productActions";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../store"; // adjust path as needed
+import { useDispatch, useSelector } from "react-redux";
+import "./products.scss";
+import type { AppDispatch, RootState } from "../../store";
+import { getProducts } from "./_redux/productSlice";
+import { Link } from "react-router-dom";
 
 const Products: React.FC = () => {
-    const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState<Boolean>(true);
     const dispatch = useDispatch<AppDispatch>();
+    const products = useSelector((state: RootState) => state.product.products);
     useEffect(() => {
         handleGetProducts();
-    },[]);
+    }, []);
     const handleGetProducts = async () => {
-        try{
-            const resp = await dispatch(fetchProducts());
-            if (resp && resp.payload) {
-                setProducts(resp.payload as Product[]);
-            }
-        }catch(e:any){
+        try {
+            await dispatch(getProducts());
+        } catch (e: any) {
             console.log(e);
         }
-        finally{
+        finally {
             setIsLoading(false);
         }
     }
-    if(isLoading){
+    if (isLoading) {
         return <h1>Loading...</h1>
     }
     return (
         <section id="products">
-            <div className="container">
+            <div className="container mt-3">
                 <div className="row">
                     <div className="col-md-12">
+                        <Link className="btn btn-primary" to="/products/add">Add Product</Link>
+                    </div>
+                    <div className="col-md-12 mt-3">
                         <ProductsList products={products} />
                     </div>
                 </div>

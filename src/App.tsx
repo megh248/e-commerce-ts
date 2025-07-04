@@ -4,8 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
 import './App.css';
 import Products from './components/Products/Products';
-
-const Cart = () => <div className="container mt-4"><h2>Cart</h2><p>Your shopping cart is empty.</p></div>;
+import Cart from './components/Cart/Cart';
+import AddProduct from './components/Products/AddProduct';
 
 const App: React.FC = () => {
   return (
@@ -27,6 +27,7 @@ const App: React.FC = () => {
       </nav>
       <Routes>
         <Route path="/" element={<Products />} />
+        <Route path="/products/add" element={<AddProduct />} />
         <Route path="/products" element={<Products />} />
         <Route path="/cart" element={<Cart />} />
       </Routes>
