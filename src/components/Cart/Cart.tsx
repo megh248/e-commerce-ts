@@ -4,6 +4,7 @@ import type { RootState } from "../../store";
 import type { AppDispatch } from "../../store";
 import { removeFromCart, clearCart, updateQuantity } from "./_redux/cartSlice";
 import type { CartItem } from "../../types/Cart";
+import { Link } from "react-router-dom";
 
 const Cart: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -29,7 +30,8 @@ const Cart: React.FC = () => {
     return (
         <div className="container-fluid mt-4">
             <h2>Cart</h2>
-            <button className="btn btn-danger mb-3" onClick={handleClear}>Clear Cart</button>
+            <button className="btn btn-danger " onClick={handleClear}>Clear Cart</button>
+            <button  className="btn btn-primary ms-3" ><Link className="text-white text-decoration-none" to="/checkout">Checkout</Link></button>
             <table className="table">
                 <thead>
                     <tr>

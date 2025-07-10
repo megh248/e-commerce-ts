@@ -6,6 +6,7 @@ import './App.css';
 import Products from './components/Products/Products';
 import Cart from './components/Cart/Cart';
 import AddProduct from './components/Products/AddProduct';
+import CartCheckout from './components/Cart/CartCheckout';
 
 const App: React.FC = () => {
   return (
@@ -21,6 +22,9 @@ const App: React.FC = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/cart">Cart</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/checkout">Checkout</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -30,6 +34,7 @@ const App: React.FC = () => {
         <Route path="/products/add" element={<AddProduct />} />
         <Route path="/products" element={<Products />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<CartCheckout />} />
       </Routes>
     </Router>
   );
