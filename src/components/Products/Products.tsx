@@ -11,7 +11,10 @@ import { Link } from "react-router-dom";
 const Products: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch<AppDispatch>();
+    const [currentTab, setCurrentTab] = useState("all");
+    const tabs = ["All", "Wishlist"];
     const products = useSelector((state: RootState) => state.product.products);
+    const wishlist = useSelector((state: RootState) => state.product.wishlist);
 
     // Fetch products when the page loads
     useEffect(() => {
@@ -31,7 +34,7 @@ const Products: React.FC = () => {
     };
 
     if (isLoading) {
-        return <h2 style={{textAlign: 'center', marginTop: '2rem'}}>Loading products, please wait...</h2>;
+        return <h2 style={{ textAlign: 'center', marginTop: '2rem' }}>Loading products, please wait...</h2>;
     }
 
     return (
@@ -41,8 +44,21 @@ const Products: React.FC = () => {
                     <div className="col-md-12">
                         <Link className="btn btn-primary" to="/products/add">+ Add a Product</Link>
                     </div>
+                    <div className="col-md-12 my-3">
+                        <div className="d-flex tabs">
+                            {tabs.map((tabName, index) => (
+                                <div
+                                    key={index}
+                                    className={`tab me-3 cursor-pointer ${currentTab === tabName.toLowerCase() ? "active text-decoration-underline" : ""}`}
+                                    onClick={() => setCurrentTab(tabName.toLowerCase())}
+                                >
+                                    {tabName}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                     <div className="col-md-12 mt-3">
-                        <ProductsList products={products} />
+                        <ProductsList products={currentTab === "all" ? products : wishlist} />
                     </div>
                 </div>
             </div>

@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { Product } from "../../../../types/Product";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../../../../store";
 import { addToCart } from "../../../Cart/_redux/cartSlice";
+import { addToWishlist, removeFromWishlist } from "../../_redux/productSlice";
 import type { CartItem } from "../../../../types/Cart";
+import { Heart } from "lucide-react";
 
 // ProductsListItem shows a single product card with add-to-cart controls
 const ProductsListItem: React.FC<{ product: Product }> = ({ product }) => {
     const [quantity, setQuantity] = useState<number>(1);
     const dispatch = useDispatch<AppDispatch>();
+    const wishlist = useSelector((state: any) => state.product.wishlist);
+    const isWishlisted = wishlist.some((item: Product) => item.id === product.id);
 
     const handleAddToCart = () => {
         const cartItem: CartItem = {
@@ -20,17 +24,33 @@ const ProductsListItem: React.FC<{ product: Product }> = ({ product }) => {
         dispatch(addToCart(cartItem));
     };
 
+    const handleWishlistToggle = () => {
+        if (isWishlisted) {
+            dispatch(removeFromWishlist(product.id));
+        } else {
+            dispatch(addToWishlist(product));
+        }
+    };
+
     return (
         <div className="col-md-4 mb-3 col-sm-12">
             <div className="card">
-                <img src={product.imageUrl} height={300} alt={product.name} className="card-img-top" />
+                <div className="product-image-container">
+                    <Heart
+                        className={`product-heart-icon mx-2${isWishlisted ? ' text-danger' : ''}`}
+                        onClick={handleWishlistToggle}
+                        style={{ cursor: 'pointer' }}
+                        fill={isWishlisted ? 'red' : 'none'}
+                    />
+                    <img src={product.imageUrl} height={300} alt={product.name} className="card-img-top" />
+                </div>
                 <div className="card-body">
                     <h5 className="card-title">{product.name}</h5>
                     <p className="card-text">{product.description}</p>
                     <p className="card-text">${product.price}</p>
                 </div>
                 <div className="card-footer d-flex align-items-center">
-                    <div className="d-flex align-items-center me-3 quantity-container">
+                    <div className="d-flex align-items-center me-2 quantity-container">
                         <button
                             disabled={quantity === 1}
                             className="quantity-button-minus"

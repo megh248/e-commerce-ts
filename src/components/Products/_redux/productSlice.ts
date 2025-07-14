@@ -3,11 +3,13 @@ import type { Product } from "../../../types/Product";
 
 // --- Product State ---
 interface ProductState {
-    products: Product[];
+  products: Product[];
+  wishlist: Product[];
 }
 
 const initialState: ProductState = {
-    products: [],
+  products: [],
+  wishlist: []
 };
 
 // Some sample products to seed the app for first-time users
@@ -31,6 +33,7 @@ const mockProducts: Product[] = [
 
 // --- LocalStorage helpers ---
 const LOCAL_STORAGE_KEY = 'products';
+const LOCAL_STORAGE_WISHLIST_KEY = 'wishlist';
 
 // Load products from localStorage, or return [] if not found
 function loadProductsFromStorage(): Product[] {
@@ -45,9 +48,27 @@ function loadProductsFromStorage(): Product[] {
   return [];
 }
 
+// Load wishlist from localStorage
+function loadWishlistFromStorage(): Product[] {
+  const data = localStorage.getItem(LOCAL_STORAGE_WISHLIST_KEY);
+  if (data) {
+    try {
+      return JSON.parse(data) as Product[];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
+
 // Save products to localStorage
 function saveProductsToStorage(products: Product[]) {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(products));
+}
+
+// Save wishlist to localStorage
+function saveWishlistToStorage(wishlist: Product[]) {
+  localStorage.setItem(LOCAL_STORAGE_WISHLIST_KEY, JSON.stringify(wishlist));
 }
 
 // --- Thunks ---
@@ -66,56 +87,76 @@ export const getProducts = createAsyncThunk<Product[]>(
   }
 );
 
+// Fetch wishlist from localStorage
+export const getWishlist = createAsyncThunk<Product[]>(
+  'product/getWishlist',
+  async () => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return loadWishlistFromStorage();
+  }
+);
+
 // --- Slice ---
 export const productSlice = createSlice({
-    name: "product",
-    initialState,
-    reducers: {
-        // Replace all products (rarely used)
-        setProducts: (state, action) => {
-            state.products = action.payload as Product[];
-            saveProductsToStorage(state.products);
-        },
-        // Add a new product
-        addProduct: (state, action) => {
-            state.products.push(action.payload as Product);
-            saveProductsToStorage(state.products);
-        },
-        // Remove a product by id
-        removeProduct: (state, action) => {
-            const id = action.payload as string;
-            state.products = state.products.filter(product => product.id !== id);
-            saveProductsToStorage(state.products);
-        },
-        // Update a product by id
-        updateProduct: (state, action) => {
-            const updated = action.payload as Product;
-            const index = state.products.findIndex(product => product.id === updated.id);
-            if (index !== -1) {
-                state.products[index] = updated;
-                saveProductsToStorage(state.products);
-            }
-        },
-        // Remove all products
-        clearProducts: (state) => {
-            state.products = [];
-            saveProductsToStorage([]);
-        },
+  name: "product",
+  initialState,
+  reducers: {
+    // Replace all products (rarely used)
+    setProducts: (state, action) => {
+      state.products = action.payload as Product[];
+      saveProductsToStorage(state.products);
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(getProducts.pending, (state) => {
-                // Optionally set a loading flag
-            })
-            .addCase(getProducts.fulfilled, (state, action) => {
-                state.products = action.payload;
-            })
-            .addCase(getProducts.rejected, (state) => {
-                // Optionally set an error flag
-            });
+    // Add a new product
+    addProduct: (state, action) => {
+      state.products.push(action.payload as Product);
+      saveProductsToStorage(state.products);
     },
+    // Remove a product by id
+    removeProduct: (state, action) => {
+      const id = action.payload as string;
+      state.products = state.products.filter(product => product.id !== id);
+      saveProductsToStorage(state.products);
+    },
+    // Update a product by id
+    updateProduct: (state, action) => {
+      const updated = action.payload as Product;
+      const index = state.products.findIndex(product => product.id === updated.id);
+      if (index !== -1) {
+        state.products[index] = updated;
+        saveProductsToStorage(state.products);
+      }
+    },
+    // Remove all products
+    clearProducts: (state) => {
+      state.products = [];
+      saveProductsToStorage([]);
+    },
+    // Add a product to wishlist
+    addToWishlist: (state, action) => {
+      state.wishlist.push(action.payload as Product);
+      saveWishlistToStorage(state.wishlist);
+    },
+    // Remove a product from wishlist by id
+    removeFromWishlist: (state, action) => {
+      const id = action.payload as string;
+      state.wishlist = state.wishlist.filter(product => product.id !== id);
+      saveWishlistToStorage(state.wishlist);
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getProducts.pending, (state) => {
+        // Optionally set a loading flag
+      })
+      .addCase(getProducts.fulfilled, (state, action) => {
+        state.products = action.payload;
+      })
+      .addCase(getProducts.rejected, (state) => {
+        // Optionally set an error flag
+      });
+  },
 });
 
-export const { setProducts, addProduct, removeProduct, updateProduct, clearProducts } = productSlice.actions;
+export const { setProducts, addProduct, removeProduct, updateProduct, clearProducts, addToWishlist, removeFromWishlist } = productSlice.actions;
 
 export default productSlice.reducer;
