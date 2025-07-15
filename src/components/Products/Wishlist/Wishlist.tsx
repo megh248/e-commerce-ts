@@ -1,17 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import ProductsList from "./ProductsList/ProductsList";
+import ProductsList from "../ProductsList/ProductsList";
 import { useDispatch, useSelector } from "react-redux";
-import "./products.scss";
-import type { AppDispatch, RootState } from "../../store";
-import { getProducts } from "./_redux/productSlice";
-import { Link } from "react-router-dom";
+import "../products.scss";
+import type { AppDispatch, RootState } from "../../../store";
+import { getProducts } from "../_redux/productSlice";
 
 // Products page shows all available products
-const Products: React.FC = () => {
+const Wishlist: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch<AppDispatch>();
-    const products = useSelector((state: RootState) => state.product.products);
+    const wishlist = useSelector((state: RootState) => state.product.wishlist);
 
     // Fetch products when the page loads
     useEffect(() => {
@@ -35,14 +34,11 @@ const Products: React.FC = () => {
     }
 
     return (
-        <section id="products">
+        <section id="wishlist">
             <div className="container-fluid mt-3">
                 <div className="row">
-                    <div className="col-md-12">
-                        <Link className="btn btn-primary" to="/products/add">+ Add a Product</Link>
-                    </div>
                     <div className="col-md-12 mt-3">
-                        <ProductsList products={products} />
+                        <ProductsList products={wishlist} />
                     </div>
                 </div>
             </div>
@@ -50,4 +46,4 @@ const Products: React.FC = () => {
     );
 };
 
-export default Products;
+export default Wishlist;

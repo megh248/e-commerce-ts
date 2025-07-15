@@ -7,6 +7,7 @@ import Products from './components/Products/Products';
 import Cart from './components/Cart/Cart';
 import AddProduct from './components/Products/AddProduct';
 import CartCheckout from './components/Cart/CartCheckout';
+import Wishlist from './components/Products/Wishlist/Wishlist';
 
 const App: React.FC = () => {
   return (
@@ -25,6 +26,9 @@ const App: React.FC = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/checkout">Checkout</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/wishlist">Wishlist</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -35,6 +39,7 @@ const App: React.FC = () => {
         <Route path="/products" element={<Products />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<CartCheckout />} />
+        <Route path="/wishlist" element={<Wishlist />} />
       </Routes>
     </Router>
   );
