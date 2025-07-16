@@ -31,7 +31,7 @@ const Cart: React.FC = () => {
         <div className="container-fluid mt-4">
             <h2>Cart</h2>
             <button className="btn btn-danger " onClick={handleClear}>Clear Cart</button>
-            <button  className="btn btn-primary ms-3" ><Link className="text-white text-decoration-none" to="/checkout">Checkout</Link></button>
+            <Link className="text-white text-decoration-none" to="/checkout"><button  className="btn btn-primary ms-3" >Checkout</button></Link>
             <table className="table">
                 <thead>
                     <tr>

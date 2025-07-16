@@ -8,6 +8,7 @@ import Cart from './components/Cart/Cart';
 import AddProduct from './components/Products/AddProduct';
 import CartCheckout from './components/Cart/CartCheckout';
 import Wishlist from './components/Products/Wishlist/Wishlist';
+import ProductView from './components/Products/ProductView';
 
 const App: React.FC = () => {
   return (
@@ -37,6 +38,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Products />} />
         <Route path="/products/add" element={<AddProduct />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/products/:id" element={<ProductView />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<CartCheckout />} />
         <Route path="/wishlist" element={<Wishlist />} />

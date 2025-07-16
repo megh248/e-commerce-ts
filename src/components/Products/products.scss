@@ -29,3 +29,26 @@
   border-radius: 50%;
   padding: 4px;
 }
+
+.product-link {
+  text-decoration: none;
+  color: inherit;
+}
+.product-link:hover {
+  text-decoration: underline;
+}
+
+#product-view .product-view-image {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+#product-view .product-view-description {
+  font-size: 1.1rem;
+  margin: 1rem 0;
+}
+#product-view .product-view-price {
+  color: #007bff;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
